@@ -2,22 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { pokemonApi } from "../api/pokemonAPI";
 import { PokemonPaginatorResponse, SimplePokemon, Result } from '../interfaces/pokemonInterfaces';
 
-/* const buildException = (ex: any) => {
-    let message =
-        ex && ex !== undefined && ex.toString && ex.toString !== undefined
-            ? ex.toString()
-            : '';
-    if (
-        ex.response &&
-        ex.response !== undefined &&
-        ex.response.data &&
-        ex.response.data !== undefined
-    ) {
-        message = JSON.stringify(ex.response.data);
-    }
-    throw new Error(message);
-}; */
-
 export const usePokemonPaginator = () => {
 
     //const isMounted = useRef(true);
@@ -45,6 +29,24 @@ export const usePokemonPaginator = () => {
         setisLoading(false);
     };
 
+    const getPokemons2 = () => {
+        new Promise((resolve: any, reject: any) => {
+            setisLoading(true);
+            const response = pokemonApi.get<PokemonPaginatorResponse>(nextPageURL.current);
+    
+            response.then(resp => {
+                // console.log(resp.data);
+                nextPageURL.current = resp.data.next;
+                mapPokemonList(resp.data.results);
+                resolve();
+            }).catch(ex => {
+                console.log(ex);
+                reject();
+            });
+    
+        })
+    }
+
     const getPokemons = async () => {
         setisLoading(true);
         try {
@@ -59,12 +61,12 @@ export const usePokemonPaginator = () => {
     };
 
     useEffect(() => {
-        getPokemons();
+        getPokemons2();
     }, []);
 
     return {
         isLoading,
         pokemonList,
-        getPokemons
+        getPokemons2
     }
 }

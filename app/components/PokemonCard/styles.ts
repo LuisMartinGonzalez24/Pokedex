@@ -3,13 +3,9 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
 
     container: {
-        
-    },
-
-    cardContainer: {
         marginHorizontal: 10,
-        //backgroundColor: 'grey',
-        height: 135,
+        backgroundColor: 'red',
+        height: 135,        
         marginBottom: 20,
         borderRadius: 10,
 
@@ -44,7 +40,7 @@ export const styles = StyleSheet.create({
 
     containerWhitePokeball: {
         height: 120,
-        width: 120,        
+        width: 120,
         position: 'absolute',
         bottom: 0,
         right: 0,

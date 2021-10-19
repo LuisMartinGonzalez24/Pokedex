@@ -15,27 +15,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     console.log('me he vuelto a en homeScreen renderizar :(');
 
     const { top } = useSafeAreaInsets();
-    const { pokemonList, getPokemons } = usePokemonPaginator();
-
-    /* const getItem = (data: SimplePokemon[], index: number) => data[index];
-    const getItemCount = (data: SimplePokemon[]): number => data.length;
-
-    const getItemLayout = (data: SimplePokemon[], index: number) => {
-        let offset = 0;
-        for (let x = 0; x < data.length && x < index; x++) {
-            offset = offset + 135;
-        }
-        return {
-            length: 135,
-            offset: offset,
-            index,
-        };
-    } */
-
-    //const getPokemonsCallBack = React.useCallback(getPokemons, [pokemonList]);
+    const { pokemonList, getPokemons2 } = usePokemonPaginator();
 
     const getPokemonsUseCallback = React.useCallback(() => {
-        getPokemons();
+        getPokemons2();
     }, []);
 
     const listHeaderComponent = React.useMemo(() => (
@@ -60,6 +43,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         )
     }, []);
 
+
+    //* VirtualizedList
+    const getItemCount = (data: SimplePokemon[]) => data.length;
+    const getItem = (pokemon: SimplePokemon[], index: number) => pokemon[index];
+
     return (
         <View style={{
             ...styles.container,
@@ -70,7 +58,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 style={styles.pokeballBG}
             />
 
-            <FlatList
+            {/* <FlatList
                 data={pokemonList}                
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
@@ -88,43 +76,32 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
                 //footer
                 ListFooterComponent={listFooterComponent}
-            />
+            /> */}
 
-            {/* <VirtualizedList
+            <VirtualizedList
                 data={pokemonList}
-                initialNumToRender={20}
-                keyExtractor={(pokemon) => pokemon.id}
-                getItem={getItem}
+                keyExtractor={keyExtractor}
+                getItem={(item, index) => getItem(item, index)}
+                extraData={pokemonList}
                 getItemCount={getItemCount}
                 showsVerticalScrollIndicator={false}
 
-                renderItem={({ item }) => (
+                renderItem={renderItem}
 
-                    <PokemonCard
-                        pokemon={item}
-                        navigation={navigation}
-                        key={item.id}
-                    />
+                getItemLayout={(data, index) => (
+                    { length: 135, offset: 135 * index, index }
                 )}
 
+                //header
+                ListHeaderComponent={listHeaderComponent}
 
-                //Header
-                ListHeaderComponent={() => (
-                    <Text style={{
-                        ...styles.title,
-                        marginTop: top + 20,
-                        marginBottom: top + 20,
-                        marginLeft: 10
-                    }}>Pokedex</Text>
-                )}
-
-                // Footer
-                ListFooterComponent={<ActivityIndicator size={50} color={'red'} style={{ height: 100 }} />}
+                //footer
+                ListFooterComponent={listFooterComponent}
 
                 //infinite scroll
-                onEndReached={getPokemons}
-                onEndReachedThreshold={0.4}
-            /> */}
+                onEndReached={getPokemons2}
+                onEndReachedThreshold={0.3}
+            />
 
 
         </View>
