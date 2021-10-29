@@ -9,6 +9,7 @@ import FadeInImage from '../../components/FadeInImage/FadeInImage';
 import { useGetPokemonDetail } from '../../hooks/useGetPokemonDetail';
 import PokemonDetails from '../../components/PokemonDetails/PokemonDetails';
 import { globalThemes } from '../../theme/globalThemes';
+import LottieView from "lottie-react-native";
 
 interface PokemonDetailsScreenProps extends StackScreenProps<RootStackParams, 'pokemonDetailsScreen'> { }
 
@@ -57,9 +58,26 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
             </View>
 
             {/** Details and loading */}
-            {isLoading ? (
+            {true ? (
                 <View>
+                    <LottieView
+                        source={require('../../assets/lottiefiles/loading-pikachu.json')}
+                        autoPlay
+                        loop
+                        style={{
+                            width: 300,
+                            height: 300,
+                            alignSelf: 'center'
+                        }}
+                    />
 
+                    <Text style={{
+                        fontFamily: 'Minecraft',
+                        fontSize: 18,
+                        position: 'absolute',
+                        bottom: 25,                        
+                        alignSelf: 'center',
+                    }}>Loading...</Text>
                 </View>
             ) : (
                 <PokemonDetails pokemon={pokemonFullDetail} />

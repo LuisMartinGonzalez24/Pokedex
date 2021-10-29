@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Image, Text, View, FlatList, ActivityIndicator, VirtualizedList, ListRenderItemInfo, PixelRatio } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Image, Text, View, FlatList, ActivityIndicator, VirtualizedList, ListRenderItemInfo } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
@@ -8,17 +8,24 @@ import { styles } from './styles';
 import { RootStackParams } from '../../navigator/Navigations';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';
+import LottieView from "lottie-react-native";
 
 interface HomeScreenProps extends StackScreenProps<RootStackParams, 'homeScreen'> { }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
-    console.log(PixelRatio.get())
     //const [myPokemonList, setmyPokemonList] = useState<any>([]);
     console.log('me he vuelto a en homeScreen renderizar :(');
-
+    const [isLoading, setisLoading] = useState(true)
+    
     const { top } = useSafeAreaInsets();
     const { pokemonList, getPokemons } = usePokemonPaginator();
+
+    useEffect(() => {
+        setTimeout(() => {
+             setisLoading(false);
+        }, 3000);
+    }, [])
 
     const getPokemonsUseCallback = React.useCallback(() => {
         getPokemons();
@@ -27,7 +34,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const listHeaderComponent = React.useMemo(() => (
         <Text style={{
             ...styles.title,
-            marginVertical: top + 10,            
+            marginVertical: top + 10,
         }}>Pokedex</Text>
     ), []);
 
@@ -36,7 +43,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     ), []);
 
     const keyExtractor = React.useCallback((pokemon: SimplePokemon, index: number) => `${index}-${pokemon.name}-${pokemon.id}`, []);
-    
+
     const renderItem = React.useMemo(() => ({ item }: ListRenderItemInfo<SimplePokemon>) => {
         return (
             <PokemonCard
@@ -46,6 +53,13 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         )
     }, []);
 
+    const itemHeight = React.useRef(135).current;
+    const getItemLayout = React.useCallback((data: SimplePokemon[] | null | undefined, index: number) => ({
+        length: itemHeight,
+        offset: itemHeight * index,
+        index
+    }), [])
+
 
     //* VirtualizedList
     const getItemCount = (data: SimplePokemon[]): number => data.length;
@@ -53,41 +67,49 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
     return (
         <View style={{
-            ...styles.container,            
+            ...styles.container,
         }}>
             <Image
                 source={require('../../assets/images/pokebola.png')}
                 style={styles.pokeballBG}
             />
 
-            <FlatList
-                data={pokemonList}                
-                keyExtractor={(item, index) => keyExtractor(item, index)}
-                renderItem={renderItem}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}     
-                //TODO: Probar luego      
-                // extraData={pokemonList}
+            {isLoading ? (
+                <LottieView 
+                    source={require('../../assets/lottiefiles/loading-pikachu.json')} 
+                    autoPlay 
+                    loop
+                />
+            ) : (
+                <FlatList
+                    data={pokemonList}
+                    keyExtractor={(item, index) => keyExtractor(item, index)}
+                    renderItem={renderItem}
+                    numColumns={2}
+                    maxToRenderPerBatch={8}
+                    windowSize={15}
+                    showsVerticalScrollIndicator={false}
 
-                contentContainerStyle={[globalThemes.ph16]}
+                    contentContainerStyle={[globalThemes.ph16]}
 
-                columnWrapperStyle = {[
-                    {
-                        justifyContent: 'space-between'
-                    },
-                    globalThemes.mb24,
-                ]}
+                    columnWrapperStyle={[
+                        {
+                            justifyContent: 'space-between'
+                        },
+                        globalThemes.mb24,
+                    ]}
 
-                //infinite scroll
-                onEndReached={getPokemonsUseCallback}
-                onEndReachedThreshold={0.3}
+                    //infinite scroll
+                    onEndReached={getPokemonsUseCallback}
+                    onEndReachedThreshold={0.3}
 
-                //header
-                ListHeaderComponent={listHeaderComponent}
+                    //header
+                    ListHeaderComponent={listHeaderComponent}
 
-                //footer
-                ListFooterComponent={listFooterComponent}
-            /> 
+                    //footer
+                    ListFooterComponent={listFooterComponent}
+                />
+            )}
 
             {/* <VirtualizedList
                 data={pokemonList}

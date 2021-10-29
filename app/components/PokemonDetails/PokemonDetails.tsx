@@ -4,6 +4,7 @@ import { PokemonFullDetails } from '../../interfaces/pokemonInterfaces';
 import PokemonSprites from '../PokemonSprites/PokemonSprites';
 import { styles } from './styles';
 import { globalThemes } from '../../theme/globalThemes';
+import PokemonStats from '../PokemonStats/PokemonStats';
 
 interface PokemonDetailsProps {
     pokemon: PokemonFullDetails;
@@ -19,7 +20,7 @@ const PokemonDetails = ({ pokemon }: PokemonDetailsProps) => {
 
     pokemon.types.forEach(({ type }) => pokemonTypes.push(type.name));
     pokemon.abilities.forEach(habilitie => pokemonBaseAbilities.push(habilitie.ability.name));
-    pokemon.moves.forEach(({move}) => pokemonMoves.push(move.name));    
+    pokemon.moves.forEach(({ move }) => pokemonMoves.push(move.name));
 
     return (
         <ScrollView
@@ -41,7 +42,7 @@ const PokemonDetails = ({ pokemon }: PokemonDetailsProps) => {
 
                 {/** Sprites */}
                 <Text style={[styles.title, globalThemes.mb14]}>Sprites</Text>
-                <PokemonSprites pokemonSprite={pokemon.sprites} stylesProps={globalThemes.mb14}/>
+                <PokemonSprites pokemonSprite={pokemon.sprites} stylesProps={globalThemes.mb14} />
 
                 {/**Habilities */}
                 <Text style={[styles.title, globalThemes.mb10]}>Base Abilities</Text>
@@ -51,6 +52,11 @@ const PokemonDetails = ({ pokemon }: PokemonDetailsProps) => {
                 <Text style={[styles.text, globalThemes.mh10, globalThemes.mb10]}>{pokemonMoves.join(', ')}</Text>
 
                 <Text style={[styles.title, globalThemes.mb10]}>Stats</Text>
+
+                <PokemonStats
+                    pokemonStats={pokemon.stats}
+                    aditionalStyles={[globalThemes.pl10, globalThemes.mb4]}
+                />
             </View>
 
         </ScrollView>
