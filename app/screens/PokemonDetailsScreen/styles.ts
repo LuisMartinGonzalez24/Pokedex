@@ -18,11 +18,13 @@ export const styles = StyleSheet.create({
 
     textName: {
         fontSize: 40,
+        fontFamily: 'Minecraft',
         color: 'white',
         textTransform: 'capitalize'
     },
 
     textId: {
+        fontFamily: 'Minecraft',
         fontSize: 40,
         color: 'white'
     },

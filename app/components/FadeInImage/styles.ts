@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 export const styles = StyleSheet.create({
 
@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
     },
 
     image: {
-        height: 120,
-        width: 120,
+        height: PixelRatio.getPixelSizeForLayoutSize(120),
+        width: PixelRatio.getPixelSizeForLayoutSize(120),
     },
 
 });

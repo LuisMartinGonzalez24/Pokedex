@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, View, Animated, StyleProp, ViewStyle, ImageStyle, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, Animated, StyleProp, ViewStyle, ImageStyle, StyleSheet, PixelRatio } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useAnimation } from '../../hooks/useAnimation';
 import { styles } from './styles';
@@ -7,7 +7,7 @@ import { styles } from './styles';
 interface FadeInImageProps {
     uri: string;
     styleProps?: StyleProp<ViewStyle>;
-    aditionalStyleImage?:  StyleSheet.NamedStyles<{}>;
+    aditionalStyleImage?: StyleSheet.NamedStyles<{}>;
 }
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
@@ -20,8 +20,15 @@ const FadeInImage = ({ uri, styleProps, aditionalStyleImage }: FadeInImageProps)
     const finishLoading = () => {
         setisLoading(false);
         fadeIn();
-    }
+    }    
 
+    const size = 37;
+    const image = {
+        uri,
+        priority: FastImage.priority.normal,
+        width: size,
+        height: size
+    }
 
     return (
         <View style={[styles.container, styleProps]}>
@@ -34,16 +41,14 @@ const FadeInImage = ({ uri, styleProps, aditionalStyleImage }: FadeInImageProps)
                 />
             }
             <AnimatedFastImage
-                source={{
-                    uri,
-                    priority: FastImage.priority.normal,
-                }}
+                source={image}
                 style={{
-                    ...styles.image,
+                    height: PixelRatio.getPixelSizeForLayoutSize(size),
+                    width: PixelRatio.getPixelSizeForLayoutSize(size),
                     ...aditionalStyleImage,
-                    opacity
+                    opacity,
                 }}
-                resizeMode={FastImage.resizeMode.center}
+                resizeMode={FastImage.resizeMode.contain}
                 onLoad={finishLoading}
             />
 

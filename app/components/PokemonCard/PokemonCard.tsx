@@ -77,16 +77,19 @@ const PokemonCard = ({ pokemon, navigation }: PokemonCardProps) => {
 
             <View style={styles.containerWhitePokeball}>
                 <Image
-                    source={require('../../assets/pokebola-blanca.png')}
+                    source={require('../../assets/images/pokebola-blanca.png')}
                     style={styles.imageWhitePokeball}
                 />
             </View>
 
-            <FadeInImage uri={pokemon.pictureURL} styleProps={{
-                position: 'absolute',
-                bottom: -10,
-                right: -5,
-            }} />
+            <FadeInImage
+                uri={pokemon.pictureURL}
+                styleProps={{
+                    position: 'absolute',
+                    bottom: -10,
+                    right: -5,
+                }}
+            />
 
 
         </TouchableOpacity>

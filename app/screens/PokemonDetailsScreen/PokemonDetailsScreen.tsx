@@ -6,8 +6,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from './styles';
 import FadeInImage from '../../components/FadeInImage/FadeInImage';
-import { usePokemon } from '../../hooks/usePokemon';
+import { useGetPokemonDetail } from '../../hooks/useGetPokemonDetail';
 import PokemonDetails from '../../components/PokemonDetails/PokemonDetails';
+import { globalThemes } from '../../theme/globalThemes';
 
 interface PokemonDetailsScreenProps extends StackScreenProps<RootStackParams, 'pokemonDetailsScreen'> { }
 
@@ -17,7 +18,7 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
 
     const { top } = useSafeAreaInsets();
     const { pokemon, backgroundColor } = route.params;
-    const { isLoading, pokemonFullDetail } = usePokemon(pokemon.id);
+    const { isLoading, pokemonFullDetail } = useGetPokemonDetail(pokemon.id);
 
     return (
         <View style={{ ...styles.container, marginTop: top, }}>
@@ -40,11 +41,11 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
 
                 <View style={styles.titleContainer}>
                     <Text style={styles.textName}>{pokemon.name}</Text>
-                    <Text style={styles.textId}># {pokemon.id}</Text>
+                    <Text style={[styles.textId, globalThemes.mt16]}># {pokemon.id}</Text>
                 </View>
 
                 <Image
-                    source={require('../../assets/pokebola-blanca.png')}
+                    source={require('../../assets/images/pokebola-blanca.png')}
                     style={styles.whitePokeball}
                 />
 
@@ -67,4 +68,4 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
     )
 }
 
-export default PokemonDetailsScreen;
+export default React.memo(PokemonDetailsScreen);

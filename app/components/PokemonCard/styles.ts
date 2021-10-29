@@ -3,10 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
 
     container: {
-        marginHorizontal: 10,
-        backgroundColor: 'red',
-        height: 135,        
-        marginBottom: 20,
+        height: 135,
         borderRadius: 10,
 
         shadowColor: "#000",
@@ -26,14 +23,14 @@ export const styles = StyleSheet.create({
 
     textName: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: 'Minecraft',
         color: 'white',
         textTransform: 'capitalize',
     },
 
     textId: {
         fontSize: 21,
-        fontWeight: 'bold',
+        fontFamily: 'Minecraft',
         color: 'white',
         marginTop: 15
     },
@@ -44,16 +41,16 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         right: 0,
-        overflow: 'hidden'
+        overflow: 'hidden',        
     },
 
     imageWhitePokeball: {
         height: 115,
         width: 115,
         opacity: 0.7,
-        position: 'absolute',
-        bottom: -20,
-        right: -20
+        position: 'relative',
+        bottom: -30,
+        right: -30,
     },
 
     pokemoImage: {
