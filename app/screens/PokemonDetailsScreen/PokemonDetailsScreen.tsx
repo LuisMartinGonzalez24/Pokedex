@@ -58,7 +58,7 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
             </View>
 
             {/** Details and loading */}
-            {true ? (
+            {isLoading ? (
                 <View>
                     <LottieView
                         source={require('../../assets/lottiefiles/loading-pikachu.json')}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Image, Text, View, FlatList, ActivityIndicator, VirtualizedList, ListRenderItemInfo } from 'react-native';
+import { Image, Text, View, FlatList, ActivityIndicator, VirtualizedList, ListRenderItemInfo, SafeAreaView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { usePokemonPaginator } from '../../hooks/usePokemonPaginator';
 import { styles } from './styles';
@@ -18,7 +17,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     console.log('me he vuelto a en homeScreen renderizar :(');
     const [isLoading, setisLoading] = useState(true)
     
-    const { top } = useSafeAreaInsets();
     const { pokemonList, getPokemons } = usePokemonPaginator();
 
     useEffect(() => {
@@ -34,7 +32,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const listHeaderComponent = React.useMemo(() => (
         <Text style={{
             ...styles.title,
-            marginVertical: top + 10,
+            marginVertical: 20,
         }}>Pokedex</Text>
     ), []);
 
@@ -66,7 +64,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     const getItem = (pokemon: SimplePokemon[], index: number): SimplePokemon => pokemon[index];
 
     return (
-        <View style={{
+        <SafeAreaView style={{
             ...styles.container,
         }}>
             <Image
@@ -137,7 +135,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             /> */}
 
 
-        </View>
+        </SafeAreaView>
     )
 }
 
