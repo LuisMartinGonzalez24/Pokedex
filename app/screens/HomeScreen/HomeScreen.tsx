@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Image, Text, View, FlatList, ActivityIndicator, VirtualizedList, ListRenderItemInfo, SafeAreaView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react'
+import { Image, Text, View, FlatList, ActivityIndicator, VirtualizedList, ListRenderItemInfo, SafeAreaView, StatusBar, Switch } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { usePokemonPaginator } from '../../hooks/usePokemonPaginator';
@@ -8,20 +8,23 @@ import { RootStackParams } from '../../navigator/Navigations';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
+import { themeContext } from '../../context/ThemeContext';
 
 interface HomeScreenProps extends StackScreenProps<RootStackParams, 'homeScreen'> { }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
     //const [myPokemonList, setmyPokemonList] = useState<any>([]);
-    console.log('me he vuelto a en homeScreen renderizar :(');
-    const [isLoading, setisLoading] = useState(true)
-    
+    console.log('me he vuelto a en homeScreen renderizar :(');    
+    const { themeState, setLightTheme, setDarkTheme } = useContext(themeContext);
+    const [isLoading, setisLoading] = useState(true);
+    const [lightDarktMode, setlightDarktMode] = useState(themeState.dark);
+
     const { pokemonList, getPokemons } = usePokemonPaginator();
 
     useEffect(() => {
         setTimeout(() => {
-             setisLoading(false);
+            setisLoading(false);
         }, 3000);
     }, [])
 
@@ -29,11 +32,33 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         getPokemons();
     }, []);
 
+    console.log('is dark: ', themeState.dark);
+
+    const toggleSwitch = () => {
+        setlightDarktMode(value => !value);
+
+        if (lightDarktMode) {
+            setDarkTheme();
+        } else {
+            setLightTheme();
+        }
+    };
+
     const listHeaderComponent = React.useMemo(() => (
-        <Text style={{
-            ...styles.title,
-            marginVertical: 20,
-        }}>Pokedex</Text>
+        <View>
+            <Text style={{
+                ...styles.title,
+                marginVertical: 20,
+                color: themeState.colors.text
+            }}>Pokedex</Text>
+            <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={themeState.dark ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={lightDarktMode}
+            />
+        </View>
     ), []);
 
     const listFooterComponent = React.useMemo(() => (
@@ -67,15 +92,23 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         <SafeAreaView style={{
             ...styles.container,
         }}>
-            <Image
-                source={require('../../assets/images/pokebola.png')}
-                style={styles.pokeballBG}
-            />
+            <StatusBar backgroundColor={ themeState.dark ? themeState.colors.background : 'grey'} />
+            {themeState.dark ? (
+                <Image
+                    source={require('../../assets/images/pokebola-blanca.png')}
+                    style={styles.pokeballWhiteBG}
+                />
+            ) : (
+                <Image
+                    source={require('../../assets/images/pokebola.png')}
+                    style={styles.pokeballBG}
+                />
+            )}
 
             {isLoading ? (
-                <LottieView 
-                    source={require('../../assets/lottiefiles/loading-pikachu.json')} 
-                    autoPlay 
+                <LottieView
+                    source={require('../../assets/lottiefiles/loading-pikachu.json')}
+                    autoPlay
                     loop
                 />
             ) : (

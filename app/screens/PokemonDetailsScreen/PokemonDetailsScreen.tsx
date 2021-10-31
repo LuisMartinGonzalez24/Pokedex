@@ -1,5 +1,5 @@
-import React from 'react'
-import { Dimensions, Text, View, TouchableOpacity, Image } from 'react-native';
+import React, { useContext } from 'react'
+import { Dimensions, Text, View, TouchableOpacity, Image, StatusBar } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigator/Navigations';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ import { useGetPokemonDetail } from '../../hooks/useGetPokemonDetail';
 import PokemonDetails from '../../components/PokemonDetails/PokemonDetails';
 import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
+import { themeContext } from '../../context/ThemeContext';
 
 interface PokemonDetailsScreenProps extends StackScreenProps<RootStackParams, 'pokemonDetailsScreen'> { }
 
@@ -18,11 +19,13 @@ const { height: screenHeight } = Dimensions.get('window');
 const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) => {
 
     const { top } = useSafeAreaInsets();
+    const { themeState } = useContext(themeContext);
     const { pokemon, backgroundColor } = route.params;
     const { isLoading, pokemonFullDetail } = useGetPokemonDetail(pokemon.id);
 
     return (
         <View style={{ ...styles.container, marginTop: top, }}>
+            <StatusBar backgroundColor={backgroundColor}/>
             {/** HEADER */}
             <View style={{
                 height: Math.ceil(screenHeight * 0.5),
@@ -41,8 +44,17 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
                 </TouchableOpacity>
 
                 <View style={styles.titleContainer}>
-                    <Text style={styles.textName}>{pokemon.name}</Text>
-                    <Text style={[styles.textId, globalThemes.mt16]}># {pokemon.id}</Text>
+                    <Text
+                        style={[
+                            styles.textName, {
+                                color: themeState.dark ? themeState.colors.text : 'white'
+                            }
+                        ]}>{pokemon.name}</Text>
+                    <Text style={[
+                        styles.textId, globalThemes.mt16, {
+                            color: themeState.dark ? themeState.colors.text : 'white'
+                        }
+                    ]}># {pokemon.id}</Text>
                 </View>
 
                 <Image
@@ -75,8 +87,9 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
                         fontFamily: 'Minecraft',
                         fontSize: 18,
                         position: 'absolute',
-                        bottom: 25,                        
+                        bottom: 25,
                         alignSelf: 'center',
+                        color: themeState.colors.text
                     }}>Loading...</Text>
                 </View>
             ) : (

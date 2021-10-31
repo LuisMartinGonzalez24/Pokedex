@@ -7,6 +7,15 @@ export const styles = StyleSheet.create({
         /* flexDirection: 'row', */        
     },
     
+    pokeballWhiteBG: {
+        width: 300,
+        height: 300,
+        position: 'absolute',
+        right: -90,
+        top: -90,
+        opacity: 0.9,        
+    },
+
     pokeballBG: {
         width: 300,
         height: 300,
