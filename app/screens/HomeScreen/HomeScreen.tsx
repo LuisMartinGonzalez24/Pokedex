@@ -9,16 +9,17 @@ import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
 import { themeContext } from '../../context/ThemeContext';
+import CustomSwitch from '../../components/CustomSwitch/CustomSwitch';
+import StatusBarComponent from '../../components/StatusBar/StatusBarComponent';
 
 interface HomeScreenProps extends StackScreenProps<RootStackParams, 'homeScreen'> { }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
     //const [myPokemonList, setmyPokemonList] = useState<any>([]);
-    console.log('me he vuelto a en homeScreen renderizar :(');    
-    const { themeState, setLightTheme, setDarkTheme } = useContext(themeContext);
+    // console.log('me he vuelto a en homeScreen renderizar :(');
+    const { themeState } = useContext(themeContext);
     const [isLoading, setisLoading] = useState(true);
-    const [lightDarktMode, setlightDarktMode] = useState(themeState.dark);
 
     const { pokemonList, getPokemons } = usePokemonPaginator();
 
@@ -34,32 +35,21 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
     console.log('is dark: ', themeState.dark);
 
-    const toggleSwitch = () => {
-        setlightDarktMode(value => !value);
-
-        if (lightDarktMode) {
-            setDarkTheme();
-        } else {
-            setLightTheme();
-        }
+    const headerComponent = (valueToggle: boolean) => {
+        console.log('Header render');
+        return (
+            <View>
+                <Text style={{
+                    ...styles.title,
+                    marginVertical: 20,
+                    color: themeState.colors.text
+                }}>Pokedex</Text>
+                <CustomSwitch isOn={valueToggle} />
+            </View>
+        )
     };
 
-    const listHeaderComponent = React.useMemo(() => (
-        <View>
-            <Text style={{
-                ...styles.title,
-                marginVertical: 20,
-                color: themeState.colors.text
-            }}>Pokedex</Text>
-            <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={themeState.dark ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={lightDarktMode}
-            />
-        </View>
-    ), []);
+    const listHeaderComponent = React.useMemo(() => headerComponent(themeState.dark), [themeState]);
 
     const listFooterComponent = React.useMemo(() => (
         <ActivityIndicator size={50} color={'red'} style={{ height: 100 }} />
@@ -92,18 +82,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         <SafeAreaView style={{
             ...styles.container,
         }}>
-            <StatusBar backgroundColor={ themeState.dark ? themeState.colors.background : 'grey'} />
-            {themeState.dark ? (
-                <Image
-                    source={require('../../assets/images/pokebola-blanca.png')}
-                    style={styles.pokeballWhiteBG}
-                />
-            ) : (
-                <Image
-                    source={require('../../assets/images/pokebola.png')}
-                    style={styles.pokeballBG}
-                />
-            )}
+
+            <StatusBarComponent barColor={themeState.colors.background} whiteOrBlackPokeball={themeState.dark}/>
 
             {isLoading ? (
                 <LottieView
@@ -129,6 +109,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                         },
                         globalThemes.mb24,
                     ]}
+                    
 
                     //infinite scroll
                     onEndReached={getPokemonsUseCallback}

@@ -11,12 +11,14 @@ export function themeReducer(state: ThemeState, action: ThemeAction): ThemeState
 
             return {
                 ...action.payload,
+                dark: false,
             };
 
         case 'set_dark_theme':
 
             return {
-                ...action.payload
+                ...action.payload,
+                dark: true,
             };
 
         default:

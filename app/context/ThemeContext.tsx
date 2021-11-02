@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useReducer, useEffect } from 'react'
 import { themeReducer } from './themeReducer';
 import { ThemeState, lightTheme, darkTheme } from '../theme/colorScheme';
 
@@ -18,6 +18,10 @@ const ThemeContext = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     
     console.log(JSON.stringify(themeState));
 
+    // useEffect(() => {
+        
+    // }, [themeState])
+
     const setLightTheme = () => {
         dispatch({
             type: 'set_light_theme',
@@ -27,7 +31,7 @@ const ThemeContext = ({ children }: { children: JSX.Element | JSX.Element[] }) =
 
     const setDarkTheme = () => {
         dispatch({
-            type: 'set_light_theme',
+            type: 'set_dark_theme',
             payload: darkTheme
         })
     }

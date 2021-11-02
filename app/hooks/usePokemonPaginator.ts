@@ -5,7 +5,7 @@ import { PokemonPaginatorResponse, SimplePokemon, Result } from '../interfaces/p
 export const usePokemonPaginator = () => {
 
     //const isMounted = useRef(true);
-    console.log('me he vuelto a en usePokemonPaginator renderizar :(');
+    // console.log('me he vuelto a en usePokemonPaginator renderizar :(');
     const [pokemonList, setpokemonList] = useState<SimplePokemon[]>([]);
     const nextPageURL = useRef<string>('https://pokeapi.co/api/v2/pokemon?limit=20');
 
