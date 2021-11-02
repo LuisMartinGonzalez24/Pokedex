@@ -25,9 +25,8 @@ const CustomSwitch = ({ isOn }: CustomSwitchProps) => {
     
     return (
         <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={"#f5dd4b"}
-            ios_backgroundColor="#3e3e3e"
+            trackColor={{ false: "#767577", true: "#1dd1a1" }}
+            thumbColor={"#ffffff"}
             onValueChange={toggleSwitch}
             value={isDarkMode}
         />
