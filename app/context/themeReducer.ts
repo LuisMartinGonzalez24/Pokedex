@@ -16,7 +16,7 @@ export function themeReducer(state: ThemeState, action: ThemeAction): ThemeState
         case 'set_dark_theme':
 
             return {
-                ...action.payload
+                ...action.payload,
             };
 
         default:

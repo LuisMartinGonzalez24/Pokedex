@@ -5,8 +5,7 @@ import { PokemonPaginatorResponse, SimplePokemon, Result } from '../interfaces/p
 export const usePokemonPaginator = () => {
 
     //const isMounted = useRef(true);
-    console.log('me he vuelto a en usePokemonPaginator renderizar :(');
-    const [isLoading, setisLoading] = useState(true);
+    // console.log('me he vuelto a en usePokemonPaginator renderizar :(');
     const [pokemonList, setpokemonList] = useState<SimplePokemon[]>([]);
     const nextPageURL = useRef<string>('https://pokeapi.co/api/v2/pokemon?limit=20');
 
@@ -28,13 +27,11 @@ export const usePokemonPaginator = () => {
             return { id, name: pokemon.name, pictureURL }
         });
 
-        setpokemonList(pokemons => [...pokemons, ...newPokemonList]);
-        setisLoading(false);
+        setpokemonList(pokemons => [...pokemons, ...newPokemonList]);        
     }, []);
 
     const getPokemons = React.useCallback(
         async () => {
-            setisLoading(true);
             try {
                 //console.log('Comienza de carga de pokemons', nextPageURL.current);
                 const response = await pokemonApi.get<PokemonPaginatorResponse>(nextPageURL.current);
@@ -52,7 +49,6 @@ export const usePokemonPaginator = () => {
     }, []);
 
     return {
-        isLoading,
         pokemonList,
         getPokemons
     };

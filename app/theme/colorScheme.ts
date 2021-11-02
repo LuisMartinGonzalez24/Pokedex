@@ -22,9 +22,9 @@ const darkTheme: ThemeState = {
     dark: true,
     colors: {
         primary: '#5856D6',
-        background: 'white',
-        card: 'white',
-        text: 'black',
+        background: '#161717',
+        card: '#161717',
+        text: 'white',
         border: 'grey',
         notification: 'teal',
     }

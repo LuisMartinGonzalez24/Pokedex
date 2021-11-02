@@ -13,8 +13,10 @@ export const themeContext = createContext({} as ThemeContextProps);
 
 const ThemeContext = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
 
-    const [themeState, dispatch] = useReducer(themeReducer, lightTheme)
-    console.log('me he vuelto a renderizar themeScreen :(')
+    const [themeState, dispatch] = useReducer(themeReducer, lightTheme);
+    console.log('theme component renderizado :(');
+    
+    console.log(JSON.stringify(themeState));
 
     const setLightTheme = () => {
         dispatch({
@@ -25,7 +27,7 @@ const ThemeContext = ({ children }: { children: JSX.Element | JSX.Element[] }) =
 
     const setDarkTheme = () => {
         dispatch({
-            type: 'set_light_theme',
+            type: 'set_dark_theme',
             payload: darkTheme
         })
     }
