@@ -4,15 +4,15 @@ import { StackScreenProps } from '@react-navigation/stack';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { usePokemonPaginator } from '../../hooks/usePokemonPaginator';
 import { styles } from './styles';
-import { RootStackParams } from '../../navigator/Navigations';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
 import { themeContext } from '../../context/ThemeContext';
 import StatusBarComponent from '../../components/StatusBar/StatusBarComponent';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
+import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
 
-interface HomeScreenProps extends StackScreenProps<RootStackParams, 'homeScreen'> { }
+interface HomeScreenProps extends StackScreenProps<RootHomeStackParams, 'homeScreen'> { }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     console.log('is dark: ', themeState.dark);
 
     const listFooterComponent = React.useMemo(() => (
-        <ActivityIndicator size={50} color={'red'} style={{ height: 100 }} />
+        <ActivityIndicator size={50} color={'red'} style={{ height: 160 }} />
     ), []);
 
     const keyExtractor = React.useCallback((pokemon: SimplePokemon, index: number) => `${index}-${pokemon.name}-${pokemon.id}`, []);

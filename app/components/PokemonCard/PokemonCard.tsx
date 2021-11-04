@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { StackNavigationProp } from '@react-navigation/stack';
 import { Text, View, TouchableOpacity, Dimensions, Image } from 'react-native';
 import ImageColors from 'react-native-image-colors'
 import { styles } from './styles';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import FadeInImage from '../FadeInImage/FadeInImage';
-import { RootStackParams } from '../../navigator/Navigations';
-import { StackNavigationProp } from '@react-navigation/stack';
+
+import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
 
 interface PokemonCardProps {
     pokemon: SimplePokemon;
-    navigation: StackNavigationProp<RootStackParams, 'homeScreen'>
+    navigation: StackNavigationProp<RootHomeStackParams, 'homeScreen'>
 }
 
 const { width: screenWidth } = Dimensions.get('window');

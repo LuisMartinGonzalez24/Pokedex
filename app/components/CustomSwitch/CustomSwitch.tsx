@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Switch, View } from 'react-native';
+import { Switch } from 'react-native';
 import { themeContext } from '../../context/ThemeContext';
 
 interface CustomSwitchProps {
