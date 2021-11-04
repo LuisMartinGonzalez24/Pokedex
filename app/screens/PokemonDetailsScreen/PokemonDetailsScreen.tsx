@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { Dimensions, Text, View, TouchableOpacity, Image, StatusBar } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParams } from '../../navigator/Navigations';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from './styles';
@@ -11,8 +10,10 @@ import PokemonDetails from '../../components/PokemonDetails/PokemonDetails';
 import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
 import { themeContext } from '../../context/ThemeContext';
+import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
+import { FocusAwareStatusBar } from '../../components/FocusAwareStatusBar/FocusAwareStatusBar';
 
-interface PokemonDetailsScreenProps extends StackScreenProps<RootStackParams, 'pokemonDetailsScreen'> { }
+interface PokemonDetailsScreenProps extends StackScreenProps<RootHomeStackParams, 'pokemonDetailsScreen'> { }
 
 const { height: screenHeight } = Dimensions.get('window');
 
@@ -24,8 +25,8 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
     const { isLoading, pokemonFullDetail } = useGetPokemonDetail(pokemon.id);
 
     return (
-        <View style={{ ...styles.container, marginTop: top, }}>
-            <StatusBar backgroundColor={backgroundColor}/>
+        <View style={{ ...styles.container, marginTop: top, marginBottom: 50}}>
+            <FocusAwareStatusBar backgroundColor={backgroundColor}/>
             {/** HEADER */}
             <View style={{
                 height: Math.ceil(screenHeight * 0.5),
