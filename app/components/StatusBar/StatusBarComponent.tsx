@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Image, StatusBar } from 'react-native';
-import { themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
 import { styles } from './styles';
 
 interface StatusBarComponentProps {

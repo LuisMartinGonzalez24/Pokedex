@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Text, View, ViewStyle } from 'react-native';
-import { themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
 import { Stat } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';
 import { styles } from './styles';

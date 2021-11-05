@@ -5,7 +5,7 @@ import PokemonSprites from '../PokemonSprites/PokemonSprites';
 import { styles } from './styles';
 import { globalThemes } from '../../theme/globalThemes';
 import PokemonStats from '../PokemonStats/PokemonStats';
-import { themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
 
 interface PokemonDetailsProps {
     pokemon: PokemonFullDetails;

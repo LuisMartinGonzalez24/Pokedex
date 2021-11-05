@@ -1,45 +1,34 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { FlatList, ActivityIndicator, ListRenderItemInfo, SafeAreaView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
-import { usePokemonPaginator } from '../../hooks/usePokemonPaginator';
 import { styles } from './styles';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
-import { themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
 import StatusBarComponent from '../../components/StatusBar/StatusBarComponent';
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
+import { AppContext } from '../../context/AppContext/AppContext';
 
 interface HomeScreenProps extends StackScreenProps<RootHomeStackParams, 'homeScreen'> { }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
-    //const [myPokemonList, setmyPokemonList] = useState<any>([]);
-    // console.log('me he vuelto a en homeScreen renderizar :(');
     const { themeState } = useContext(themeContext);
-    const [isLoading, setisLoading] = useState(true);
+    const { isFetching, pokemonListState, addMorePokemons } = useContext(AppContext);
 
-    const { pokemonList, getPokemons } = usePokemonPaginator();
-
-    useEffect(() => {
-        setTimeout(() => {
-            setisLoading(false);
-        }, 3000);
-    }, [])
 
     const getPokemonsUseCallback = React.useCallback(() => {
-        getPokemons();
+        addMorePokemons();
     }, []);
-
-    console.log('is dark: ', themeState.dark);
 
     const listFooterComponent = React.useMemo(() => (
         <ActivityIndicator size={50} color={'red'} style={{ height: 160 }} />
     ), []);
 
-    const keyExtractor = React.useCallback((pokemon: SimplePokemon, index: number) => `${index}-${pokemon.name}-${pokemon.id}`, []);
+    const keyExtractor = React.useCallback((pokemon: SimplePokemon, index: number) => `${index}-${pokemon.name}-${pokemon.id}`, [pokemonListState]);
 
     const renderItem = React.useMemo(() => ({ item }: ListRenderItemInfo<SimplePokemon>) => {
         return (
@@ -48,7 +37,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 navigation={navigation}
             />
         )
-    }, []);
+    }, [pokemonListState]);
 
     return (
         <SafeAreaView style={{
@@ -68,7 +57,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 additionalStyles={[globalThemes.ph20, globalThemes.pv12]}
             />
 
-            {isLoading ? (
+            {isFetching ? (
                 <LottieView
                     source={require('../../assets/lottiefiles/loading-pikachu.json')}
                     autoPlay
@@ -76,7 +65,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 />
             ) : (
                 <FlatList
-                    data={pokemonList}
+                    data={pokemonListState}
                     keyExtractor={(item, index) => keyExtractor(item, index)}
                     renderItem={renderItem}
                     numColumns={2}

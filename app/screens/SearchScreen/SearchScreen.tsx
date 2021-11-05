@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { View, ActivityIndicator, FlatList, Text, ListRenderItemInfo } from 'react-native';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import SearchInput from '../../components/SearchInput/SearchInput';
-import { themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
 import { useGetAllPokemons } from '../../hooks/useGetAllPokemons';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';

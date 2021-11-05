@@ -1,4 +1,4 @@
-import { ThemeState } from "../theme/colorScheme";
+import { ThemeState } from "../../theme/colorScheme";
 
 type ThemeAction =
     | { type: 'set_light_theme', payload: ThemeState}

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Switch } from 'react-native';
-import { themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
 
 interface CustomSwitchProps {
     isOn: boolean;
