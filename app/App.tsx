@@ -1,12 +1,15 @@
 import React from 'react'
-import ThemeContext from './context/ThemeContext';
+import { AppProvider } from './context/AppContext/AppContext';
+import { ThemeProvider } from './context/ThemeContext/ThemeContext';
 import Navigations from './navigator/Navigations';
 
 const App = () => {
   return (
-    <ThemeContext>
-      <Navigations/>
-    </ThemeContext>
+    <AppProvider>
+      <ThemeProvider>
+        <Navigations />
+      </ThemeProvider>
+    </AppProvider>
   )
 }
 

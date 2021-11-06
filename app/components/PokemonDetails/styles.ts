@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
 
     informationContainer: {
-         
+
     },
 
     title: {
@@ -15,7 +15,12 @@ export const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         marginLeft: 10,
-        textAlign: "justify"        
+        textAlign: "justify"
+    },
+
+    spriteContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
     }
-    
+
 });

@@ -7,7 +7,7 @@ export const useDebounceValue = (input: string = '', time: number = 500) => {
 
     useEffect(() => {
 
-        setisWritting(true);
+        if (input.trim().length > 0) setisWritting(true); 
 
         const timeOut = setTimeout(() => {
             setdebounceValue(input);

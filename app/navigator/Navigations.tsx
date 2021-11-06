@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import { themeContext } from '../context/ThemeContext';
+import { themeContext } from '../context/ThemeContext/ThemeContext';
 import { BottomTabNavigation } from './BottomTabNavigation';
 
 const Navigations = () => {

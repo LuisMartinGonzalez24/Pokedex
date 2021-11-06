@@ -16,8 +16,7 @@ interface PokemonCardProps {
 const { width: screenWidth } = Dimensions.get('window');
 
 const PokemonCard = ({ pokemon, navigation }: PokemonCardProps) => {
-
-
+    
     const [pokemonBackgroundColor, setpokemonBackgroundColor] = useState<string>('grey');
     const isMounted = useRef(true);
 
@@ -40,6 +39,9 @@ const PokemonCard = ({ pokemon, navigation }: PokemonCardProps) => {
             }
         } catch (error) {
             console.log('>>ERROR getColorsOfImage: ', error);
+            if (isMounted.current) {
+                setpokemonBackgroundColor('grey')
+            }
         }
     }
 
