@@ -36,10 +36,8 @@ export const useGetAllPokemons = () => {
 
     const getPokemons = async () => {
         try {
-            //console.log('Comienza de carga de pokemons', nextPageURL.current);
             const response = await pokemonApi.get<PokemonPaginatorResponse>(pokemonApiRef);
             mapPokemonList(response.data.results);
-            //console.log('Fin de carga de pokemons');
         } catch (error) {
             console.log('getPokemons error: ', error)
         }

@@ -6,6 +6,7 @@ import { styles } from './styles';
 import { globalThemes } from '../../theme/globalThemes';
 import PokemonStats from '../PokemonStats/PokemonStats';
 import { themeContext } from '../../context/ThemeContext/ThemeContext';
+import FadeInImage from '../FadeInImage/FadeInImage';
 
 interface PokemonDetailsProps {
     pokemon: PokemonFullDetails;
@@ -15,8 +16,8 @@ const { height: screenHeight } = Dimensions.get('window');
 
 const PokemonDetails = ({ pokemon }: PokemonDetailsProps) => {
 
-    const { themeState } = useContext(themeContext);
-    
+    const { themeState: { dark, colors } } = useContext(themeContext);
+
     const pokemonTypes: string[] = [];
     const pokemonBaseAbilities: string[] = [];
     const pokemonMoves: string[] = [];
@@ -38,52 +39,74 @@ const PokemonDetails = ({ pokemon }: PokemonDetailsProps) => {
             }}>
 
                 <Text style={[styles.title, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>Types</Text>
 
                 <Text style={[styles.text, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>{pokemonTypes.join(', ')}</Text>
 
                 <Text style={[styles.title, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>Weight</Text>
 
                 <Text style={[styles.text, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>{pokemon.weight} Kg</Text>
 
                 {/** Sprites */}
                 <Text style={[styles.title, globalThemes.mb14, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>Sprites</Text>
                 <PokemonSprites pokemonSprite={pokemon.sprites} stylesProps={globalThemes.mb14} />
 
                 {/**Habilities */}
                 <Text style={[styles.title, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>Base Abilities</Text>
 
                 <Text style={[styles.text, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>{pokemonBaseAbilities.join(', ')}</Text>
 
                 <Text style={[styles.title, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>Moves</Text>
 
                 <Text style={[styles.text, globalThemes.mh10, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>{pokemonMoves.join(', ')}</Text>
 
                 <Text style={[styles.title, globalThemes.mb10, {
-                    color: themeState.colors.text
+                    color: colors.text
                 }]}>Stats</Text>
 
                 <PokemonStats
                     pokemonStats={pokemon.stats}
-                    aditionalStyles={[globalThemes.pl10, globalThemes.mb4]}
+                    aditionalStyles={[globalThemes.ph10, globalThemes.mb20]}
                 />
+
+                <View style={styles.spriteContainer}>
+                    <FadeInImage
+                        uri={pokemon.sprites.front_default}
+                        styleProps={[{
+                            marginVertical: 20,
+                            height: 100,
+                            borderRadius: 50,
+                            paddingHorizontal: 100,
+                            backgroundColor: 'white',
+                            shadowColor: dark ? '#ffffff' : 'rgba(0,0,0,1)',
+                            shadowOffset: {
+                                width: 10,
+                                height: 5,
+                            },
+                            shadowOpacity: 0.30,
+                            shadowRadius: 6.38,
+
+                            elevation: 7,
+                        }]}
+                    />
+                </View>
             </View>
 
         </ScrollView>

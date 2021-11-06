@@ -4,11 +4,12 @@ import { View, ActivityIndicator, FlatList, Text, ListRenderItemInfo } from 'rea
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import { themeContext } from '../../context/ThemeContext/ThemeContext';
-import { useGetAllPokemons } from '../../hooks/useGetAllPokemons';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
 import { globalThemes } from '../../theme/globalThemes';
 import { styles } from './styles';
 import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
+import { AppContext } from '../../context/AppContext/AppContext';
+import { FocusAwareStatusBar } from '../../components/FocusAwareStatusBar/FocusAwareStatusBar';
 
 interface SearchScreenProps {
     navigation: StackNavigationProp<RootHomeStackParams, 'homeScreen'>
@@ -16,8 +17,8 @@ interface SearchScreenProps {
 
 const SearchScreen = ({ navigation }: SearchScreenProps) => {
 
-    const { isFetching, pokemonList } = useGetAllPokemons();
-    const { themeState: { colors } } = useContext(themeContext);
+    const { isFetching, pokemonList } = useContext(AppContext);
+    const { themeState: { dark, colors } } = useContext(themeContext);
     const [pokemonFiltered, setpokemonFiltered] = useState<SimplePokemon[]>([]);
     const [onDebounceSearching, setonDebounceSearching] = useState<string>('')
 
@@ -61,6 +62,7 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
 
     return (
         <View style={[styles.container]}>
+            <FocusAwareStatusBar backgroundColor={dark ? colors.background : '#9D9D9D'} />
             <SearchInput
                 onDebounce={setonDebounceSearching}
                 additionalStyles={[globalThemes.mt20]}

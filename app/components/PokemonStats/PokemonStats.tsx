@@ -36,28 +36,42 @@ const PokemonStats = ({ pokemonStats, aditionalStyles }: PokemonStatsProps) => {
 
     return (
         <View style={[styles.container, aditionalStyles]}>
-            {pokemonStats.map(({ stat, base_stat }) => (
-                <View key={stat.name} style={[styles.statContainer, globalThemes.mb4]}>
-                    <Text style={[styles.stat, {
-                        color: themeState.colors.text
-                    }]}> {stat.name}: </Text>
 
-                    <Text style={[styles.baseStat, {
-                        color: themeState.colors.text
-                    }]}> {base_stat} </Text>
+            {pokemonStats.map(({ stat, base_stat }) => (
+                <View key={stat.name} style={[styles.statContainer]}>
+
+                    <View style={styles.nameStatAndBaseContainer}>
+                        <Text style={[styles.stat, {
+                            color: themeState.colors.text,
+                        }]}> {stat.name}: </Text>
+
+                        <Text style={[styles.baseStat, {
+                            color: themeState.colors.text,
+                        }]}> {base_stat} </Text>
+                    </View>
+
                     <View
                         style={[
-                            globalThemes.ml10,
                             {
-                                height: 20,
-                                width: base_stat * 1.5,
-                                backgroundColor: statColor(stat.name),
+                                flex: 1.2,
+                                overflow: 'hidden',
                                 borderRadius: 5,
                             }
                         ]}
-                    />
+                    >
+                        <View style={[
+                            globalThemes.ml10,
+                            {
+                                height: 20,
+                                width: base_stat * 1.3,                            
+                                backgroundColor: statColor(stat.name),
+                                borderRadius: 6,
+                            }
+                        ]} />
+                    </View>
                 </View>
             ))}
+
         </View>
     )
 }

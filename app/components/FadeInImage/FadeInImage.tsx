@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, View, Animated, StyleProp, ViewStyle, ImageStyle, StyleSheet, PixelRatio } from 'react-native';
+import { ActivityIndicator, View, Animated, StyleProp, ViewStyle, StyleSheet, PixelRatio } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useAnimation } from '../../hooks/useAnimation';
 import { styles } from './styles';
@@ -28,7 +28,7 @@ const FadeInImage = ({ uri, styleProps, aditionalStyleImage }: FadeInImageProps)
         priority: FastImage.priority.normal,
         width: size,
         height: size
-    }
+    };
 
     return (
         <View style={[styles.container, styleProps]}>
@@ -56,4 +56,4 @@ const FadeInImage = ({ uri, styleProps, aditionalStyleImage }: FadeInImageProps)
     )
 }
 
-export default FadeInImage;
+export default React.memo(FadeInImage);

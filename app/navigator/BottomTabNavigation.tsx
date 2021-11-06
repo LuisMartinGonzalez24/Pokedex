@@ -68,10 +68,10 @@ export const BottomTabNavigation = () => {
                 component={HomeStackNavigation}
             />
 
-            {/* <BottomTab.Screen
+            <BottomTab.Screen
                 name="bottomTabSearchScreen"
                 component={SearchStackNavigation}
-            /> */}
+            />
         </BottomTab.Navigator>
     );
 }

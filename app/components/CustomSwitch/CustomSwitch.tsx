@@ -14,8 +14,6 @@ const CustomSwitch = ({ isOn }: CustomSwitchProps) => {
     const toggleSwitch = React.useCallback(() => {
         setisDarkMode(value => !value);
 
-        console.log('New value toggle: ', isDarkMode)
-
         if(isDarkMode) {
             setLightTheme();
         } else {

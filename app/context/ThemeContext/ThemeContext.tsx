@@ -2,13 +2,14 @@ import React, { createContext, useReducer } from 'react'
 import { themeReducer } from './themeReducer';
 import { ThemeState, lightTheme, darkTheme } from '../../theme/colorScheme';
 
-//* Information that i want to expose
+//* Definition and what must export my context
 interface ThemeContextProps {
     themeState: ThemeState;
     setLightTheme: () => void;
     setDarkTheme: () => void;
 }
 
+//* Create context
 const themeContext = createContext({} as ThemeContextProps);
 
 const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
