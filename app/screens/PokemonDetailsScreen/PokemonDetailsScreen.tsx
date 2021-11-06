@@ -9,7 +9,7 @@ import { useGetPokemonDetail } from '../../hooks/useGetPokemonDetail';
 import PokemonDetails from '../../components/PokemonDetails/PokemonDetails';
 import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
-import { themeContext } from '../../context/ThemeContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
 import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
 import { FocusAwareStatusBar } from '../../components/FocusAwareStatusBar/FocusAwareStatusBar';
 

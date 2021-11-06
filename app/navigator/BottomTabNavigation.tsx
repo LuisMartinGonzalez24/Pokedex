@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { themeContext } from "../context/ThemeContext";
+import { themeContext } from "../context/ThemeContext/ThemeContext";
 import { HomeStackNavigation } from "./HomeStackNavigation";
 import { SearchStackNavigation } from "./SearchStackNavigation";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";

@@ -1,22 +1,20 @@
 import React, { createContext, useReducer } from 'react'
 import { themeReducer } from './themeReducer';
-import { ThemeState, lightTheme, darkTheme } from '../theme/colorScheme';
+import { ThemeState, lightTheme, darkTheme } from '../../theme/colorScheme';
 
-//* Information that i want to expose
+//* Definition and what must export my context
 interface ThemeContextProps {
     themeState: ThemeState;
     setLightTheme: () => void;
     setDarkTheme: () => void;
 }
 
-export const themeContext = createContext({} as ThemeContextProps);
+//* Create context
+const themeContext = createContext({} as ThemeContextProps);
 
-const ThemeContext = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
 
     const [themeState, dispatch] = useReducer(themeReducer, lightTheme);
-    console.log('theme component renderizado :(');
-    
-    console.log(JSON.stringify(themeState));
 
     const setLightTheme = () => {
         dispatch({
@@ -43,4 +41,4 @@ const ThemeContext = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     )
 }
 
-export default ThemeContext;
+export {ThemeProvider, themeContext};

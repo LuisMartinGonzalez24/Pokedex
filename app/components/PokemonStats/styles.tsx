@@ -7,21 +7,26 @@ export const styles = StyleSheet.create({
     },
 
     statContainer: {
-        display: 'flex',
-        flexDirection: 'row',
         height: 40,
+        flexDirection: 'row',
         alignItems: 'center',
     },
 
+    nameStatAndBaseContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        flex: 1,
+    },
+
     stat: {
+        flex: 1,
         fontFamily: 'Minecraft',
         fontSize: 16,
-        width: 150,
         textTransform: 'capitalize',
     },
 
     baseStat: {
         fontSize: 16,
-    }
+    },
 
 });
