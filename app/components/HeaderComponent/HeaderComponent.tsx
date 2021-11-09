@@ -6,12 +6,13 @@ import { styles } from './styles';
 interface HeaderComponentProps {
     title: string;
     titleColor: string;
-    valueToggle: boolean;
+    showToggle: boolean;
+    valueToggle?: boolean;
     backgroundColor: string;
     additionalStyles?: ViewStyle | ViewStyle[];
 }
 
-const HeaderComponent = ({ title, titleColor, valueToggle, backgroundColor, additionalStyles }: HeaderComponentProps) => {
+const HeaderComponent = ({ title, titleColor, showToggle, valueToggle = false, backgroundColor, additionalStyles }: HeaderComponentProps) => {
     return (
         <View style={[
             styles.container,
@@ -24,7 +25,7 @@ const HeaderComponent = ({ title, titleColor, valueToggle, backgroundColor, addi
                 ...styles.title,
                 color: titleColor
             }}>{title}</Text>
-            <CustomSwitch isOn={valueToggle} />
+            {showToggle && <CustomSwitch isOn={valueToggle} />}
         </View>
     )
 }

@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Dimensions, Text, View, TouchableOpacity, Image, StatusBar } from 'react-native';
+import React, { useContext, useState } from 'react'
+import { Dimensions, Text, View, TouchableOpacity, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,6 +12,8 @@ import LottieView from "lottie-react-native";
 import { themeContext } from '../../context/ThemeContext/ThemeContext';
 import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
 import { FocusAwareStatusBar } from '../../components/FocusAwareStatusBar/FocusAwareStatusBar';
+import { deleteFavoritePokemon, getFavoritesPokemon, saveFavoritePokemon } from '../../helpers/favoritesFunctions';
+import { AppContext } from '../../context/AppContext/AppContext';
 
 interface PokemonDetailsScreenProps extends StackScreenProps<RootHomeStackParams, 'pokemonDetailsScreen'> { }
 
@@ -19,14 +21,30 @@ const { height: screenHeight } = Dimensions.get('window');
 
 const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) => {
 
-    const { top } = useSafeAreaInsets();
+    const { top } = useSafeAreaInsets();    
     const { themeState } = useContext(themeContext);
-    const { pokemon, backgroundColor } = route.params;
-    const { isLoading, pokemonFullDetail } = useGetPokemonDetail(pokemon.id);
+    const { pokemon: { id, name, pictureURL, isFavorite }, backgroundColor } = route.params;
+    const { isLoading, pokemonFullDetail } = useGetPokemonDetail(id);
+    const [favorite, setfavorite] = useState<boolean>(isFavorite);
+    const { addFavoritePokemon, removeFavoritePokemon } = useContext(AppContext);
+
+    const savePokemon = async (id: string) => {
+        setfavorite(value => !value);
+        await saveFavoritePokemon(id);
+        const listPokemonsId = await getFavoritesPokemon();
+        addFavoritePokemon(listPokemonsId);
+    }
+
+    const deletePokemon = async (id: string) => {
+        setfavorite(value => !value);
+        await deleteFavoritePokemon(id);
+        const listPokemonsId = await getFavoritesPokemon();
+        removeFavoritePokemon(listPokemonsId);
+    }
 
     return (
-        <View style={{ ...styles.container, marginTop: top, marginBottom: 50}}>
-            <FocusAwareStatusBar backgroundColor={backgroundColor}/>
+        <View style={{ ...styles.container, marginTop: top, marginBottom: 50 }}>
+            <FocusAwareStatusBar backgroundColor={backgroundColor} />
             {/** HEADER */}
             <View style={{
                 height: Math.ceil(screenHeight * 0.5),
@@ -35,14 +53,28 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
                 borderBottomRightRadius: screenHeight / 2,
                 zIndex: 1
             }}>
-                {/** BackButton */}
-                <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={styles.backButton}
-                    onPress={() => navigation.pop()}
-                >
-                    <Icon name={'arrow-left-bold-circle-outline'} size={50} color={'white'} />
-                </TouchableOpacity>
+                {/** BackButton and FavoriteButton */}
+                <View style={[styles.buttonActionsContainer, globalThemes.mh10]}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={styles.backButton}
+                        onPress={() => navigation.pop()}
+                    >
+                        <Icon name={'arrow-left-bold-circle-outline'} size={50} color={'white'} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={styles.backButton}
+                        onPress={() => isFavorite ? deletePokemon(id) : savePokemon(id)}
+                    >
+                        <Icon
+                            name={favorite ? 'heart' : 'heart-outline'}
+                            size={50}
+                            color={favorite ? '#e63946' : '#fff'}
+                        />
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.titleContainer}>
                     <Text
@@ -50,12 +82,12 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
                             styles.textName, {
                                 color: themeState.dark ? themeState.colors.text : 'white'
                             }
-                        ]}>{pokemon.name}</Text>
+                        ]}>{name}</Text>
                     <Text style={[
                         styles.textId, globalThemes.mt16, {
                             color: themeState.dark ? themeState.colors.text : 'white'
                         }
-                    ]}># {pokemon.id}</Text>
+                    ]}># {id}</Text>
                 </View>
 
                 <Image
@@ -64,7 +96,7 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
                 />
 
                 <FadeInImage
-                    uri={pokemon.pictureURL}
+                    uri={pictureURL}
                     styleProps={styles.stylesPropsFadeInImage}
                     aditionalStyleImage={styles.pokemonImage}
                 />

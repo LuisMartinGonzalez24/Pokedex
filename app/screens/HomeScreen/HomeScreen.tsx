@@ -18,7 +18,7 @@ interface HomeScreenProps extends StackScreenProps<RootHomeStackParams, 'homeScr
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
     const { themeState: { dark, colors } } = useContext(themeContext);
-    const { isFetching, pokemonList } = useContext(AppContext);
+    const { isFetching, appState: { pokemonList } } = useContext(AppContext);
 
     const listFooterComponent = React.useMemo(() => (
         <ActivityIndicator size={50} color={'red'} style={{ height: 160 }} />
@@ -42,11 +42,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
             <FocusAwareStatusBar backgroundColor={dark ? colors.background : '#9D9D9D'} />
 
-            <ImagePokeballComponent/>
+            <ImagePokeballComponent />
 
             <HeaderComponent
                 title={'Pokedex'}
                 titleColor={colors.text}
+                showToggle={true}
                 valueToggle={dark}
                 backgroundColor={colors.background}
                 additionalStyles={[globalThemes.ph20, globalThemes.pv12]}
@@ -68,6 +69,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     windowSize={15}
                     showsVerticalScrollIndicator={false}
 
+                    style={[globalThemes.pt10]}
                     contentContainerStyle={[globalThemes.ph16]}
                     columnWrapperStyle={[
                         {

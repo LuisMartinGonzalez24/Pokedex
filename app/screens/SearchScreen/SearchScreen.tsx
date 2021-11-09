@@ -17,7 +17,7 @@ interface SearchScreenProps {
 
 const SearchScreen = ({ navigation }: SearchScreenProps) => {
 
-    const { isFetching, pokemonList } = useContext(AppContext);
+    const { appState: { pokemonList } } = useContext(AppContext);
     const { themeState: { dark, colors } } = useContext(themeContext);
     const [pokemonFiltered, setpokemonFiltered] = useState<SimplePokemon[]>([]);
     const [onDebounceSearching, setonDebounceSearching] = useState<string>('')
@@ -68,26 +68,7 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
                 additionalStyles={[globalThemes.mt20]}
             />
 
-            {isFetching ? (
-                (
-                    <View style={{
-                        ...styles.container,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}>
-                        <ActivityIndicator
-                            size={45}
-                            color={colors.text}
-                        />
-                        <Text style={{
-                            fontFamily: 'Minecraft',
-                            fontSize: 12,
-                            textAlign: 'center',
-                            ...globalThemes.mt20
-                        }}>Fetching pokemons...</Text>
-                    </View>
-                )
-            ) : pokemonFiltered.length === 0 ? (
+            {pokemonFiltered.length === 0 ? (
                 <View style={{
                     ...styles.container,
                     alignItems: 'center',
