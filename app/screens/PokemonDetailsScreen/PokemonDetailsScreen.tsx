@@ -38,8 +38,7 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
     const deletePokemon = async (id: string) => {
         setfavorite(value => !value);
         await deleteFavoritePokemon(id);
-        const listPokemonsId = await getFavoritesPokemon();
-        removeFavoritePokemon(listPokemonsId);
+        removeFavoritePokemon(id);
     }
 
     return (
@@ -66,11 +65,11 @@ const PokemonDetailsScreen = ({ navigation, route }: PokemonDetailsScreenProps) 
                     <TouchableOpacity
                         activeOpacity={0.7}
                         style={styles.backButton}
-                        onPress={() => isFavorite ? deletePokemon(id) : savePokemon(id)}
+                        onPress={() => favorite ? deletePokemon(id) : savePokemon(id)}
                     >
                         <Icon
                             name={favorite ? 'heart' : 'heart-outline'}
-                            size={50}
+                            size={60}
                             color={favorite ? '#e63946' : '#fff'}
                         />
                     </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { FlatList, ActivityIndicator, ListRenderItemInfo, SafeAreaView } from 'react-native';
+import { FlatList, ActivityIndicator, ListRenderItemInfo, SafeAreaView, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { styles } from './styles';
@@ -8,7 +8,7 @@ import { globalThemes } from '../../theme/globalThemes';
 import LottieView from "lottie-react-native";
 import { themeContext } from '../../context/ThemeContext/ThemeContext';
 import ImagePokeballComponent from '../../components/ImagePokeBall/ImagePokeballComponent';
-import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
+import HeaderWithToggle from '../../components/HeaderComponent/HeaderWithToggle';
 import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
 import { AppContext } from '../../context/AppContext/AppContext';
 import { FocusAwareStatusBar } from '../../components/FocusAwareStatusBar/FocusAwareStatusBar';
@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     }, []);
 
     return (
-        <SafeAreaView style={{
+        <View style={{
             ...styles.container,
         }}>
 
@@ -44,10 +44,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
             <ImagePokeballComponent />
 
-            <HeaderComponent
+            <HeaderWithToggle
                 title={'Pokedex'}
                 titleColor={colors.text}
-                showToggle={true}
                 valueToggle={dark}
                 backgroundColor={colors.background}
                 additionalStyles={[globalThemes.ph20, globalThemes.pv12]}
@@ -82,7 +81,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     ListFooterComponent={listFooterComponent}
                 />
             )}
-        </SafeAreaView>
+        </View>
     )
 }
 

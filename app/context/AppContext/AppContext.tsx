@@ -20,8 +20,9 @@ const appStateInitial: AppState = {
 interface AppContextProps {
     appState: AppState;
     isFetching: boolean;
-    addFavoritePokemon: (newPokemonIdList: string []) => void;
-    removeFavoritePokemon: (newPokemonIdList: string []) => void;
+    addFavoritePokemon: (newPokemonIdList: string[]) => void;
+    removeFavoritePokemon: (newPokemonIdList: string) => void;
+    emptyFavoritePokemon: () => void;
 }
 
 //* Create context
@@ -45,27 +46,40 @@ const AppProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =>
     }
 
     useEffect(() => {
-        getPokemons.then(pokemons => {
+        if (appState.pokemonList.length === 0) {
+            getPokemons.then(pokemons => {
+                dispatch({
+                    type: 'charge-all-pokemons',
+                    payload: pokemons,
+                })
+            })
+        } else {
             dispatch({
                 type: 'charge-all-pokemons',
-                payload: pokemons,
+                payload: appState.pokemonList,
             })
-        })
+        }
 
         setFavoritePokemonsList();
-    }, []);
+    }, [appState.pokemonListFavorites]);
 
-    const addFavoritePokemon = (newPokemonIdList: string []) => {
+    const addFavoritePokemon = (newPokemonIdList: string[]) => {
         dispatch({
             type: 'add-favorite-pokemon',
             payload: newPokemonIdList,
         })
     }
 
-    const removeFavoritePokemon = (newPokemonIdList: string []) => {
+    const removeFavoritePokemon = (newPokemonIdList: string) => {
         dispatch({
             type: 'delete-favorite-pokemon',
             payload: newPokemonIdList,
+        })
+    }
+
+    const emptyFavoritePokemon = () => {
+        dispatch({
+            type: 'empty-favorite-pokemon',
         })
     }
 
@@ -75,6 +89,7 @@ const AppProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =>
             isFetching,
             addFavoritePokemon,
             removeFavoritePokemon,
+            emptyFavoritePokemon,
         }}>
             {children}
         </AppContext.Provider>

@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const favoriteKey = 'favorites-pokemon';
 
 const saveFavoritePokemon = async (id: string) => {
-    
+
     console.log('saving pokemon');
     const listPokemonsId = await getFavoritesPokemon();
 
@@ -12,11 +13,15 @@ const saveFavoritePokemon = async (id: string) => {
             listPokemonsId.push(id);
             favoritesPokemons = JSON.stringify(listPokemonsId);
         } else {
-            listPokemonsId.push(id);
-            favoritesPokemons = JSON.stringify(listPokemonsId);
+            if (listPokemonsId.includes(id)) {
+                favoritesPokemons = JSON.stringify(listPokemonsId);
+            } else {
+                listPokemonsId.push(id);
+                favoritesPokemons = JSON.stringify(listPokemonsId);
+            }
         }
 
-        await AsyncStorage.setItem('favorites-pokemon', favoritesPokemons);
+        await AsyncStorage.setItem(favoriteKey, favoritesPokemons);
 
     } catch (ex) {
         console.log('error to save favorite pokemon: ', ex);
@@ -29,8 +34,8 @@ const deleteFavoritePokemon = async (id: string) => {
     const listPokemonsId = await getFavoritesPokemon();
 
     try {
-        const favoritesPokemons = listPokemonsId.filter(pokemonId => pokemonId !== id);        
-        await AsyncStorage.setItem('favorites-pokemon', JSON.stringify(favoritesPokemons));
+        const favoritesPokemons = listPokemonsId.filter(pokemonId => pokemonId !== id);
+        await AsyncStorage.setItem(favoriteKey, JSON.stringify(favoritesPokemons));
     } catch (ex) {
         console.log('error to save favorite pokemon: ', ex);
     }
@@ -38,9 +43,12 @@ const deleteFavoritePokemon = async (id: string) => {
 
 const getFavoritesPokemon = async (): Promise<string[]> => {
     try {
-        const listPokemonsId = await AsyncStorage.getItem('favorites-pokemon');
+        const listPokemonsId = await AsyncStorage.getItem(favoriteKey);
 
-        if (listPokemonsId !== null) {
+        if (
+            listPokemonsId !== null &&
+            listPokemonsId.length > 0
+        ) {
             return JSON.parse(listPokemonsId);
         } else {
             return [];
@@ -51,19 +59,14 @@ const getFavoritesPokemon = async (): Promise<string[]> => {
     }
 }
 
-const seePokemonsIdList = async () => {
+const deleteAllFavoritePokemons = async () => {
     try {
-        const listPokemonsId = await AsyncStorage.getItem('favorites-pokemon');
-
-        if (listPokemonsId !== null) {
-            console.log('id list: ', JSON.parse(listPokemonsId));
-        } else {
-            console.log('empty id list');
-        }
-
+        await AsyncStorage.removeItem(favoriteKey);
     } catch (ex) {
-        console.log('error to get favorites pokemons: ' + ex);
+        throw new Error('error to get favorites pokemons: ' + ex);
     }
 }
 
-export { saveFavoritePokemon, deleteFavoritePokemon, getFavoritesPokemon, seePokemonsIdList };
+export { 
+    saveFavoritePokemon, deleteFavoritePokemon, getFavoritesPokemon, deleteAllFavoritePokemons 
+};

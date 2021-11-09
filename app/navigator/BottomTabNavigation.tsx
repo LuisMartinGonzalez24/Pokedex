@@ -72,6 +72,12 @@ export const BottomTabNavigation = () => {
                     }
                 })
             })}
+            safeAreaInsets={{
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            }}
             initialRouteName={'bottomTabHome'}
         >
             <BottomTab.Screen

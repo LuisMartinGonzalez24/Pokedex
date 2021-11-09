@@ -1,22 +1,25 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { View, ActivityIndicator, FlatList, Text, ListRenderItemInfo } from 'react-native';
-import PokemonCard from '../../components/PokemonCard/PokemonCard';
-import SearchInput from '../../components/SearchInput/SearchInput';
-import { themeContext } from '../../context/ThemeContext/ThemeContext';
-import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
-import { globalThemes } from '../../theme/globalThemes';
-import { styles } from './styles';
-import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
+import { View, FlatList, Text, ListRenderItemInfo } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { AppContext } from '../../context/AppContext/AppContext';
+import { themeContext } from '../../context/ThemeContext/ThemeContext';
+import SearchInput from '../../components/SearchInput/SearchInput';
+import PokemonCard from '../../components/PokemonCard/PokemonCard';
+import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
+import { RootHomeStackParams } from '../../navigator/HomeStackNavigation';
 import { FocusAwareStatusBar } from '../../components/FocusAwareStatusBar/FocusAwareStatusBar';
+import { styles } from './styles';
+import { globalThemes } from '../../theme/globalThemes';
 
 interface SearchScreenProps {
     navigation: StackNavigationProp<RootHomeStackParams, 'homeScreen'>
 }
 
+
 const SearchScreen = ({ navigation }: SearchScreenProps) => {
 
+    const tabBarHeight = useBottomTabBarHeight();
     const { appState: { pokemonList } } = useContext(AppContext);
     const { themeState: { dark, colors } } = useContext(themeContext);
     const [pokemonFiltered, setpokemonFiltered] = useState<SimplePokemon[]>([]);
@@ -47,7 +50,7 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
             filterPokemonBy(inputValue)
         };
 
-    }, [onDebounceSearching])
+    }, [onDebounceSearching, pokemonList])
 
     const keyExtractor = React.useCallback((pokemon: SimplePokemon, index: number) => `${index}-${pokemon.name}-${pokemon.id}`, []);
 
@@ -92,7 +95,13 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
                     windowSize={15}
                     showsVerticalScrollIndicator={false}
 
-                    contentContainerStyle={[globalThemes.ph16, { paddingTop: 85 }]}
+                    contentContainerStyle={[
+                        globalThemes.ph16,  
+                        {
+                            paddingTop: 85, 
+                            paddingBottom: tabBarHeight
+                        }
+                    ]}
                     columnWrapperStyle={[
                         {
                             justifyContent: 'space-between'

@@ -2,17 +2,18 @@ import React from 'react'
 import { Text, View, ViewStyle } from 'react-native';
 import CustomSwitch from '../CustomSwitch/CustomSwitch';
 import { styles } from './styles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-interface HeaderComponentProps {
+interface HeaderWithToggleProps {
     title: string;
     titleColor: string;
-    showToggle: boolean;
     valueToggle?: boolean;
     backgroundColor: string;
     additionalStyles?: ViewStyle | ViewStyle[];
 }
 
-const HeaderComponent = ({ title, titleColor, showToggle, valueToggle = false, backgroundColor, additionalStyles }: HeaderComponentProps) => {
+const HeaderWithToggle = ({ title, titleColor, valueToggle = false, backgroundColor, additionalStyles }: HeaderWithToggleProps) => {
     return (
         <View style={[
             styles.container,
@@ -25,9 +26,10 @@ const HeaderComponent = ({ title, titleColor, showToggle, valueToggle = false, b
                 ...styles.title,
                 color: titleColor
             }}>{title}</Text>
-            {showToggle && <CustomSwitch isOn={valueToggle} />}
+            <CustomSwitch isOn={valueToggle} />
         </View>
     )
+
 }
 
-export default React.memo(HeaderComponent);
+export default React.memo(HeaderWithToggle);
