@@ -4,10 +4,12 @@ import { themeContext } from "../context/ThemeContext/ThemeContext";
 import { HomeStackNavigation } from "./HomeStackNavigation";
 import { SearchStackNavigation } from "./SearchStackNavigation";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { FavoritesStackNavigation } from "./FavoritesStackNavigation";
 
 export type RootBottomTabParams = {
     bottomTabHome: undefined;
     bottomTabSearchScreen: undefined;
+    bottomTabFavoritesScreen: undefined;
 };
 
 const BottomTab = createBottomTabNavigator<RootBottomTabParams>();
@@ -35,7 +37,16 @@ export const BottomTabNavigation = () => {
                         case 'bottomTabHome':
                             return (
                                 <Icon
-                                    name={'home'}
+                                    name={'home-outline'}
+                                    size={30}
+                                    color={color}
+                                />
+                            );
+
+                        case 'bottomTabFavoritesScreen':
+                            return (
+                                <Icon
+                                    name={'heart-outline'}
                                     size={30}
                                     color={color}
                                 />
@@ -61,11 +72,22 @@ export const BottomTabNavigation = () => {
                     }
                 })
             })}
+            safeAreaInsets={{
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            }}
             initialRouteName={'bottomTabHome'}
         >
             <BottomTab.Screen
                 name="bottomTabHome"
                 component={HomeStackNavigation}
+            />
+
+            <BottomTab.Screen
+                name="bottomTabFavoritesScreen"
+                component={FavoritesStackNavigation}
             />
 
             <BottomTab.Screen

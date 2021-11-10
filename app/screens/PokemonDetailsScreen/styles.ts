@@ -5,10 +5,19 @@ export const styles = StyleSheet.create({
     container: {
          flex: 1,
     },
+
+    buttonActionsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
     
-    backButton: {
-        marginLeft: 10,
+    backButton: {        
         marginTop: 15
+    },
+
+    loveButton: {
+
     },
 
     titleContainer: {

@@ -16,6 +16,7 @@ export interface SimplePokemon {
     name: string;
     pictureURL: string;
     color?: string;
+    isFavorite: boolean;
 }
 
 //* PokemonFullDetails
