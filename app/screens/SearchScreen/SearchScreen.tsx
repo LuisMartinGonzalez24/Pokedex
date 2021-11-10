@@ -16,7 +16,6 @@ interface SearchScreenProps {
     navigation: StackNavigationProp<RootHomeStackParams, 'homeScreen'>
 }
 
-
 const SearchScreen = ({ navigation }: SearchScreenProps) => {
 
     const tabBarHeight = useBottomTabBarHeight();
@@ -77,13 +76,19 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <Text style={{
-                        fontFamily: 'Minecraft',
-                        fontSize: 20,
-                        textAlign: 'center',
-                        color: colors.text,
-                        ...globalThemes.mt20
-                    }}>Search a pokemon by Name or Id</Text>
+                    {onDebounceSearching.length > 0 ? (
+                        <Text style={[
+                            globalThemes.mt20,
+                            styles.message,
+                            { color: colors.text, }
+                        ]}>No pokemon for: {onDebounceSearching}</Text>
+                    ) : (
+                        <Text style={[
+                            globalThemes.mt20,
+                            styles.message,
+                            { color: colors.text, }
+                        ]}>Search a pokemon by Name or Id</Text>
+                    )}
                 </View>
             ) : (
                 <FlatList
@@ -96,9 +101,9 @@ const SearchScreen = ({ navigation }: SearchScreenProps) => {
                     showsVerticalScrollIndicator={false}
 
                     contentContainerStyle={[
-                        globalThemes.ph16,  
+                        globalThemes.ph16,
                         {
-                            paddingTop: 85, 
+                            paddingTop: 85,
                             paddingBottom: tabBarHeight
                         }
                     ]}

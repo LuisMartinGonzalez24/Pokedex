@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { FlatList, ListRenderItemInfo, Text, View } from 'react-native'
+import { FlatList, ListRenderItemInfo, Text, View, ToastAndroid } from 'react-native'
 import { StackNavigationProp } from '@react-navigation/stack';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { getFavoritesPokemon, deleteAllFavoritePokemons } from '../../helpers/favoritesFunctions';
@@ -23,30 +23,24 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps) => {
     const tabBarHeight = useBottomTabBarHeight();
     const { themeState: { dark, colors } } = useContext(themeContext);
     const { appState: { pokemonList, pokemonListFavorites, }, emptyFavoritePokemon } = useContext(AppContext);
+    const [visibleToast, setvisibleToast] = useState<boolean>(false);
     const [showModal, setshowModal] = useState<boolean>(false);
     const [listFavoritesPokemons, setlistFavoritesPokemons] = useState<SimplePokemon[]>([]);
 
-    /* const setListPokemons = async () => {
-        const pokemonsId = await getFavoritesPokemon();
-        console.log('favorites', pokemonsId)
+    const setListFavoritePokemons = async () => {
+        const listPokemonsId = await getFavoritesPokemon();
 
         const favoritePokemons: SimplePokemon[] = pokemonList.filter(
-            pokemon => pokemonsId.includes(pokemon.id)
+            pokemon => listPokemonsId.includes(pokemon.id)
         );
-
         setlistFavoritesPokemons(favoritePokemons);
-    } */
+    }
+
+    useEffect(() => setvisibleToast(false), [visibleToast]);
 
     useEffect(() => {
-        // setListPokemons();
-        getFavoritesPokemon().then(pokemonsId => {
-            console.log('favorites', pokemonsId)
-            const favoritePokemons: SimplePokemon[] = pokemonList.filter(
-                pokemon => pokemonsId.includes(pokemon.id)
-            );
-            setlistFavoritesPokemons(favoritePokemons);
-        });
-    }, [pokemonList])
+        setListFavoritePokemons();
+    }, [pokemonListFavorites])
 
     const keyExtractor = React.useCallback((pokemon: SimplePokemon, index: number) => `${index}-${pokemon.name}-${pokemon.id}`, []);
 
@@ -60,22 +54,33 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps) => {
     }, []);
 
     const removeAllFavoritePokemons = async () => {
+        setshowModal(false);
+        await deleteAllFavoritePokemons();
+        emptyFavoritePokemon();
+    }
 
+    const toggleModal = async () => {
         const pokemonsId = await getFavoritesPokemon();
-        console.log('removeAllFavoritePokemons: ', pokemonsId);
-        
         if (pokemonsId.length === 0) {
-            console.log('No tienes pokemones para borrar')
+            setvisibleToast(true);
         } else {
-            await deleteAllFavoritePokemons();
-            emptyFavoritePokemon();
-            toggleModal();
+            setshowModal(true);
         }
     }
 
-    const toggleModal = () => {
-        setshowModal(value => !value);
-    }
+    const Toast = ({ visible, message }: { visible: boolean, message: string }) => {
+        if (visible) {
+            ToastAndroid.showWithGravityAndOffset(
+                message,
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+                25,
+                50
+            );
+            return null;
+        }
+        return null;
+    };
 
     return (
         <View style={styles.container}>
@@ -83,16 +88,18 @@ const FavoritesScreen = ({ navigation }: FavoritesScreenProps) => {
 
             <ModalComponent
                 setVisible={showModal}
-                cancelCallback={toggleModal}
+                cancelCallback={() => setshowModal(false)}
                 actionCallback={removeAllFavoritePokemons}
             />
+
+            <Toast visible={visibleToast} message="You don't have pokemons!" />
 
             <HeaderWithOptions
                 title={'Favorites'}
                 titleColor={colors.text}
                 backgroundColor={colors.background}
                 additionalStyles={[globalThemes.ph20, globalThemes.pv12,]}
-                callback={() => removeAllFavoritePokemons()}
+                callback={toggleModal}
             />
 
             {listFavoritesPokemons.length === 0 ? (

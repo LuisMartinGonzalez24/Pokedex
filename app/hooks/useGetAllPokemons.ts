@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { pokemonApi } from "../api/pokemonAPI";
-import { getFavoritesPokemon } from "../helpers/favoritesFunctions";
 import { PokemonPaginatorResponse, SimplePokemon, Result } from '../interfaces/pokemonInterfaces';
 
 export const useGetAllPokemons = () => {
@@ -20,13 +19,11 @@ export const useGetAllPokemons = () => {
 
     const mapPokemonList = React.useCallback(async (pokemonListResult: Result[]) => {
 
-        const favoritePokemonsIdList = await getFavoritesPokemon();
-
         const newPokemonList: SimplePokemon[] = pokemonListResult.map(pokemon => {
             const id = getIdFromURL(pokemon.url);
             const pictureURL = getPictureURL(id);
 
-            return { id, name: pokemon.name, pictureURL, isFavorite: favoritePokemonsIdList.includes(id) };
+            return { id, name: pokemon.name, pictureURL, isFavorite: false };
         });
 
         setisFetching(false);

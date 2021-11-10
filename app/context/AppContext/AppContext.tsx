@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 import { getFavoritesPokemon } from '../../helpers/favoritesFunctions';
 import { useGetAllPokemons } from '../../hooks/useGetAllPokemons';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
@@ -34,34 +34,22 @@ const AppProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =>
     const { isFetching, getPokemons } = useGetAllPokemons();
     const [appState, dispatch] = useReducer(appReducer, appStateInitial);
 
-    const setFavoritePokemonsList = async () => {
+    const chargePokemons = async () => {
         const favoritePokemons = await getFavoritesPokemon();
-
-        if (favoritePokemons && favoritePokemons.length === 0) {
+        getPokemons.then(pokemons => {
             dispatch({
-                type: 'charge-favorite-pokemons-list',
-                payload: favoritePokemons,
+                type: 'charge-pokemons',
+                payload: {
+                    pokemons,
+                    favoritePokemons,
+                },
             })
-        }
+        });
     }
 
     useEffect(() => {
-        if (appState.pokemonList.length === 0) {
-            getPokemons.then(pokemons => {
-                dispatch({
-                    type: 'charge-all-pokemons',
-                    payload: pokemons,
-                })
-            })
-        } else {
-            dispatch({
-                type: 'charge-all-pokemons',
-                payload: appState.pokemonList,
-            })
-        }
-
-        setFavoritePokemonsList();
-    }, [appState.pokemonListFavorites]);
+        chargePokemons();
+    }, [])
 
     const addFavoritePokemon = (newPokemonIdList: string[]) => {
         dispatch({

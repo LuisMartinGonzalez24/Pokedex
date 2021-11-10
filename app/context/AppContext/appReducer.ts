@@ -2,8 +2,13 @@ import { SimplePokemon } from "../../interfaces/pokemonInterfaces";
 import { AppState } from "./AppContext";
 
 type AppReducerTypes =
-    | { type: 'charge-all-pokemons', payload: SimplePokemon[] }
-    | { type: 'charge-favorite-pokemons-list', payload: string[] }
+    | {
+        type: 'charge-pokemons',
+        payload: {
+            pokemons: SimplePokemon[],
+            favoritePokemons: string[]
+        }
+    }
     | { type: 'add-favorite-pokemon', payload: string[] }
     | { type: 'delete-favorite-pokemon', payload: string }
     | { type: 'empty-favorite-pokemon' };
@@ -11,17 +16,16 @@ type AppReducerTypes =
 export const appReducer = (state: AppState, action: AppReducerTypes): AppState => {
 
     switch (action.type) {
-
-        case 'charge-all-pokemons':
+        case 'charge-pokemons':
             return {
                 ...state,
-                pokemonList: action.payload,
-            }
-
-        case 'charge-favorite-pokemons-list':
-            return {
-                ...state,
-                pokemonListFavorites: action.payload,
+                pokemonList: action.payload.pokemons.map(pokemon => {
+                    return {
+                        ...pokemon,
+                        isFavorite: action.payload.favoritePokemons.includes(pokemon.id)
+                    }
+                }),
+                pokemonListFavorites: action.payload.favoritePokemons,
             }
 
         case 'add-favorite-pokemon':
@@ -36,9 +40,9 @@ export const appReducer = (state: AppState, action: AppReducerTypes): AppState =
         case 'delete-favorite-pokemon':
             return {
                 ...state,
-                pokemonList: state.pokemonList.map(pokemon => {
-                    return { ...pokemon, isFavorite: action.payload.includes(pokemon.id) }
-                }),
+                pokemonList: state.pokemonList.map(pokemon =>
+                    pokemon.id === action.payload ? { ...pokemon, isFavorite: false } : pokemon
+                ),
                 pokemonListFavorites: state.pokemonListFavorites.filter(
                     pokemonId => pokemonId !== action.payload
                 ),
