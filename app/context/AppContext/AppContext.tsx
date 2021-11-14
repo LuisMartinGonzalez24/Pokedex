@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from 'react'
+import React, { createContext, useEffect, useState, useReducer } from 'react'
 import { getFavoritesPokemon } from '../../helpers/favoritesFunctions';
 import { useGetAllPokemons } from '../../hooks/useGetAllPokemons';
 import { SimplePokemon } from '../../interfaces/pokemonInterfaces';
@@ -31,8 +31,9 @@ const AppContext = createContext({} as AppContextProps);
 //* Component that provide my state
 const AppProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
 
-    const { isFetching, getPokemons } = useGetAllPokemons();
+    const { getPokemons } = useGetAllPokemons();
     const [appState, dispatch] = useReducer(appReducer, appStateInitial);
+    const [isFetching, setisFetching] = useState<boolean>(true);
 
     const chargePokemons = async () => {
         const favoritePokemons = await getFavoritesPokemon();
@@ -44,6 +45,7 @@ const AppProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =>
                     favoritePokemons,
                 },
             })
+            setisFetching(false);
         });
     }
 

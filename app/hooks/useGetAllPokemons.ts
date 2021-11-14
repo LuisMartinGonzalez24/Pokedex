@@ -1,10 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { pokemonApi } from "../api/pokemonAPI";
 import { PokemonPaginatorResponse, SimplePokemon, Result } from '../interfaces/pokemonInterfaces';
 
 export const useGetAllPokemons = () => {
 
-    const [isFetching, setisFetching] = useState(true);
     const pokemonApiRef = useRef<string>('https://pokeapi.co/api/v2/pokemon?limit=1180').current;
 
     const getIdFromURL = React.useCallback(
@@ -26,7 +25,6 @@ export const useGetAllPokemons = () => {
             return { id, name: pokemon.name, pictureURL, isFavorite: false };
         });
 
-        setisFetching(false);
         return newPokemonList;
     }, []);
 
@@ -45,7 +43,6 @@ export const useGetAllPokemons = () => {
     });
 
     return {
-        isFetching,
         getPokemons,
     };
 }
